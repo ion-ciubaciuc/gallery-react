@@ -17,7 +17,7 @@ const images = [
 
 const App = () => {
     return (
-        <div className='m-auto p-8 w-fit'>
+        <div className='m-auto p-4 md:p-8 w-fit'>
             <Gallery items={images} />
         </div>
     );

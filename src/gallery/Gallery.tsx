@@ -5,6 +5,7 @@ import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import Button from './Button';
 import Navigation from './Navigation';
+import NavigationDot from './NavigationDot';
 
 type GalleryProps = {
     className?: string;
@@ -39,10 +40,10 @@ const Gallery: FC<GalleryProps> = (props) => {
     }, [props.items.length]);
 
     return (
-        <div className='flex gap-4 w-full'>
-            <div className='overflow-y-auto w-36 space-y-4 no-scrollbar'>
+        <div className='flex lg:gap-4 gap-2 w-full max-lg:flex-col-reverse'>
+            <div className='max-lg:overflow-x-auto lg:overflow-y-auto flex lg:flex-col lg:gap-4 gap-2 no-scrollbar'>
                 {props.items.map((item, i) => (
-                    <img {...item} loading='lazy' onClick={() => handleClick(i)} key={i} />
+                    <img className='w-36' {...item} loading='lazy' onClick={() => handleClick(i)} key={i} />
                 ))}
             </div>
             <div className='relative max-w-5xl w-full'>
@@ -63,7 +64,7 @@ const Gallery: FC<GalleryProps> = (props) => {
                     </Button>
                     {props.items.map((_, index) => (
                         <Button onClick={() => handleClick(index)} key={index}>
-                            <div className={`rounded-full bg-white ${currentIndex === index ? 'p-1.5' : 'p-1'}`}></div>
+                            <NavigationDot active={currentIndex === index} />
                         </Button>
                     ))}
                     <Button onClick={() => handleClick(currentIndex + 1)}>

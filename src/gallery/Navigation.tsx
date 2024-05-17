@@ -5,7 +5,7 @@ type NavigationProps = {
 };
 
 const Navigation: FC<NavigationProps> = (props) => (
-    <div className='absolute bottom-4 flex gap-2 items-center left-1/2 -translate-x-1/2 p-2.5 bg-gray-600 bg-opacity-80 rounded-full'>
+    <div className='absolute bottom-2 lg:bottom-4 flex gap-2 items-center left-1/2 -translate-x-1/2 p-2 bg-gray-600 bg-opacity-80 rounded-full'>
         {props.children}
     </div>
 );

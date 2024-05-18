@@ -1,11 +1,13 @@
 import type { FC } from 'react';
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import Button from './Button';
 import Navigation from './Navigation';
 import NavigationDot from './NavigationDot';
+import Thumbnail from './Thumbnail';
+import { mod } from './utils';
 
 type GalleryProps = {
     className?: string;
@@ -14,17 +16,22 @@ type GalleryProps = {
 
 let timeoutId: number | undefined = undefined;
 
+/**
+ * TODO:
+ * - add option to select the active index;
+ * - improve responsive design;
+ * - add support for customisation;
+ */
 const Gallery: FC<GalleryProps> = (props) => {
     const sliderRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleClick = useCallback(
         (index: number) => {
-            const minMaxIndex = Math.max(0, Math.min(index, props.items.length - 1));
-            setCurrentIndex(minMaxIndex);
+            const modulus = mod(index, props.items.length);
+            setCurrentIndex(modulus);
             sliderRef.current?.scroll({
-                left: sliderRef.current.clientWidth * minMaxIndex,
-                behavior: 'smooth',
+                left: sliderRef.current.clientWidth * modulus,
             });
         },
         [props.items.length],
@@ -39,23 +46,38 @@ const Gallery: FC<GalleryProps> = (props) => {
         }, 100);
     }, [props.items.length]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            sliderRef.current?.scroll({
+                left: sliderRef.current.clientWidth * currentIndex,
+            });
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [currentIndex]);
+
     return (
-        <div className='flex lg:gap-4 gap-2 w-full max-lg:flex-col-reverse'>
-            <div className='max-lg:overflow-x-auto lg:overflow-y-auto flex lg:flex-col lg:gap-4 gap-2 no-scrollbar'>
+        <div className='flex flex-col-reverse md:grid grid-cols-5 h-full w-full overflow-hidden md:aspect-video gap-2'>
+            <div className='md:col-span-1 max-md:overflow-x-auto md:overflow-y-auto scrollbar-hidden gap-2 flex md:flex-col border border-transparent'>
                 {props.items.map((item, i) => (
-                    <img className='w-36' {...item} loading='lazy' onClick={() => handleClick(i)} key={i} />
+                    <Thumbnail {...item} onClick={() => handleClick(i)} key={i} />
                 ))}
             </div>
-            <div className='relative max-w-5xl w-full'>
+            <div className='md:col-span-4 relative'>
                 <div
-                    className='grid auto-cols-[100%] grid-flow-col overflow-x-auto sm:grid-cols-[repeat(auto-fill,100%)] snap-x snap-mandatory scroll-smooth aspect-video no-scrollbar'
+                    className='size-full grid auto-cols-[100%] grid-flow-col overflow-x-auto sm:grid-cols-[repeat(auto-fill,100%)] snap-x snap-mandatory scroll-smooth motion-reduce:scroll-auto scrollbar-hidden rounded-lg '
                     onScroll={handleSroll}
                     ref={sliderRef}
                 >
                     {props.items.map((item, i) => (
-                        <div className='snap-center snap-always size-full relative overflow-hidden' key={i}>
-                            <img {...item} className='object-cover' loading='lazy' alt={`${i}`} />
-                        </div>
+                        <img
+                            {...item}
+                            className='object-cover size-full snap-center snap-always'
+                            loading='lazy'
+                            key={i}
+                        />
                     ))}
                 </div>
                 <Navigation>

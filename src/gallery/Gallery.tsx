@@ -72,12 +72,9 @@ const Gallery: FC<GalleryProps> = (props) => {
                     ref={sliderRef}
                 >
                     {props.items.map((item, i) => (
-                        <img
-                            {...item}
-                            className='object-cover size-full snap-center snap-always'
-                            loading='lazy'
-                            key={i}
-                        />
+                        <div className='object-cover size-full snap-center snap-always' key={i}>
+                            <img {...item} className='object-cover size-full' loading='lazy' />
+                        </div>
                     ))}
                 </div>
                 <Navigation>

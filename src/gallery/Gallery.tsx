@@ -6,6 +6,8 @@ import ArrowRight from './ArrowRight';
 import Button from './Button';
 import Navigation from './Navigation';
 import NavigationDot from './NavigationDot';
+import Slide from './Slide';
+import Slider from './Slider';
 import Thumbnail from './Thumbnail';
 import { mod } from './utils';
 
@@ -19,7 +21,6 @@ let timeoutId: number | undefined = undefined;
 /**
  * TODO:
  * - add option to select the active index;
- * - improve responsive design;
  * - add support for customisation;
  */
 const Gallery: FC<GalleryProps> = (props) => {
@@ -66,20 +67,11 @@ const Gallery: FC<GalleryProps> = (props) => {
                 ))}
             </div>
             <div className='md:col-span-4 relative'>
-                <div
-                    className='size-full grid auto-cols-[100%] grid-flow-col overflow-x-auto sm:grid-cols-[repeat(auto-fill,100%)] snap-x snap-mandatory scroll-smooth motion-reduce:scroll-auto scrollbar-hidden rounded-lg '
-                    onScroll={handleSroll}
-                    ref={sliderRef}
-                >
+                <Slider onScroll={handleSroll} ref={sliderRef}>
                     {props.items.map((item, i) => (
-                        <img
-                            {...item}
-                            className='object-cover size-full snap-center snap-always'
-                            loading='lazy'
-                            key={i}
-                        />
+                        <Slide {...item} key={i} />
                     ))}
-                </div>
+                </Slider>
                 <Navigation>
                     <Button onClick={() => handleClick(currentIndex - 1)}>
                         <ArrowLeft />

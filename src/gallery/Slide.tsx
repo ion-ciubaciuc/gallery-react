@@ -6,7 +6,7 @@ type SlideProps = {
 };
 
 const Slide: FC<SlideProps> = (props) => (
-    <img className='object-cover size-full snap-center snap-always' loading='lazy' {...props} />
+    <img className='object-cover size-full snap-center snap-always max-lg:aspect-video' loading='lazy' {...props} />
 );
 
 export default Slide;

@@ -7,7 +7,7 @@ type ThumbnailProps = {
 };
 
 const Thumbnail: FC<ThumbnailProps> = (props) => (
-    <img className='size-full object-cover aspect-video max-md:h-20 rounded-lg' loading='lazy' {...props} />
+    <img className='size-full object-cover aspect-video max-md:h-20 rounded-xl' loading='lazy' {...props} />
 );
 
 export default Thumbnail;

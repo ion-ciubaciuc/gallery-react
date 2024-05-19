@@ -2,12 +2,18 @@ import type { FC, ReactNode } from 'react';
 
 type NavigationProps = {
     children: ReactNode;
+    onClick: () => void;
+    direction: 'left' | 'right';
 };
 
 const Navigation: FC<NavigationProps> = (props) => (
-    <div className='absolute bottom-2 md:bottom-4 flex gap-2.5 items-center left-1/2 -translate-x-1/2 px-1.5 py-1 bg-gray-600 bg-opacity-80 rounded-full text-white'>
+    <button
+        className={`absolute bg-gray-600 bg-opacity-80 rounded-full text-white p-1 top-1/2 -translate-y-1/2 ${props.direction === 'left' ? 'left-2' : 'right-2'}`}
+        type='button'
+        onClick={props.onClick}
+    >
         {props.children}
-    </div>
+    </button>
 );
 
 export default Navigation;

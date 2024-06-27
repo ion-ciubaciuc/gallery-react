@@ -17,11 +17,6 @@ type GalleryProps = {
     }[];
 };
 
-/**
- * TODO:
- * - add option to select the active index;
- * - add support for customisation;
- */
 const Gallery: FC<GalleryProps> = (props) => {
     const sliderRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,7 +25,7 @@ const Gallery: FC<GalleryProps> = (props) => {
         (index: number) => {
             const modulus = mod(index, props.items.length);
             setCurrentIndex(modulus);
-            sliderRef.current?.scroll({
+            sliderRef.current?.scrollTo({
                 left: sliderRef.current.clientWidth * modulus,
             });
         },
